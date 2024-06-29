@@ -163,6 +163,7 @@
             <polygon id="p3gon" points="6.123233995736766e-14,-1000 866.0254037844387,499.99999999999983 -866.0254037844385,500.00000000000034"></polygon>
         </clipPath>
         <symbol id="s3gon" viewBox="-1000 -1000 2000 2000">
+            
             <a href="https://instagram.com/markpostura/">
                 <image xlink:href="img_1.png" x="-1000" y="-1000" width="2000" height="2000" clip-path="url(#cp3gon)"/>
             </a>
@@ -174,7 +175,8 @@
         </symbol>
         <symbol id="s3gon3" viewBox="-1000 -1000 2000 2000">
             <a href="https://posturacorretta.org/">
-                <image xlink:href="img_3.png" x="-1000" y="-1000" width="2000" height="2000" clip-path="url(#cp3gon)"/>
+            <image xlink:href="img_3.png" x="-1000" y="-1000" width="2000" height="2000" clip-path="url(#cp3gon)"/>
+        
             </a>
         </symbol>
         <symbol id="s3gon4" viewBox="-1000 -1000 2000 2000">
@@ -221,54 +223,49 @@
             document.body.appendChild(s);
         })();
 
-        function startDrag(e) {
+        rot.addEventListener('mousedown', function (e) {
             drag = true;
-            x0 = e.clientX || e.touches[0].clientX;
-            y0 = e.clientY || e.touches[0].clientY;
+            x0 = e.clientX;
+            y0 = e.clientY;
             startstate = auto.checked;
             document.body.classList.add(dcls);
 
             if (startstate) auto.checked = false;
-            if (!inf.classList.contains(fcls)) inf.classList.add(fcls);
-        }
+            if (!inf.classList.contains(fcls))
+                inf.classList.add(fcls);
+        }, false);
 
-        function dragMove(e) {
+        addEventListener('mousemove', function (e) {
+            var x, y, dx, dy, d, i, j, t, a;
             if (drag) {
-                let x = e.clientX || e.touches[0].clientX;
-                let y = e.clientY || e.touches[0].clientY;
-                let dx = x - x0;
-                let dy = y - y0;
-                let d = Math.hypot(dx, dy);
+                x = e.clientX;
+                y = e.clientY;
+                dx = x - x0;
+                dy = y - y0;
+                d = Math.hypot(dx, dy);
 
                 if (d) {
-                    let i = (-dy / d).toFixed(5);
-                    let j = (dx / d).toFixed(5);
-                    let a = (.5 * d).toFixed(5);
-                    let t = 'rotate3d(' + [i, j, 0, a] + 'deg)' +
-                        getComputedStyle(rot).transform.replace('none', '');
-                    s.textContent = rsel + '{transform:' + t + '}';
+                    i = (-dy / d).toFixed(5);
+                    j = (dx / d).toFixed(5);
+                    a = (.5 * d).toFixed(5);
+                    t = 'rotate3d(' + [i, j, 0, a] + 'deg)' +
+                        getComputedStyle(rot).transform.
+                            replace('none', '');
+                    s.textContent =
+                        rsel + '{transform:' + t + '}';
                     x0 = x;
                     y0 = y;
                 }
             }
-        }
+        }, false);
 
-        function endDrag() {
+        addEventListener('mouseup', function (e) {
             if (drag) {
                 drag = false;
                 document.body.classList.remove(dcls);
                 if (startstate) auto.checked = true;
             }
-        }
-
-        rot.addEventListener('mousedown', startDrag, false);
-        rot.addEventListener('touchstart', startDrag, false);
-
-        addEventListener('mousemove', dragMove, false);
-        addEventListener('touchmove', dragMove, false);
-
-        addEventListener('mouseup', endDrag, false);
-        addEventListener('touchend', endDrag, false);
+        }, false);
 
         addEventListener('transitionend', function (e) {
             document.body.removeChild(e.target);
